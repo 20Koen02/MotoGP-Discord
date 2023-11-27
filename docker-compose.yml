@@ -1,8 +1,11 @@
+# docker push ghcr.io/20koen02/motogp-discord:latest
+
 version: '3.9'
 services:
   motogp-discord:
     container_name: motogp-discord
     image: ghcr.io/20koen02/motogp-discord:latest
+    platform: linux/amd64
     restart: unless-stopped
     env_file: .env
     build: .

@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+  motogp-discord:
+    container_name: motogp-discord
+    image: koen02/motogp-discord:latest
+    restart: unless-stopped
+    env_file: .env
+    build: .

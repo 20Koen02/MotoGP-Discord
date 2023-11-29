@@ -29,13 +29,14 @@ export const getSessionEmoji = (shortname: string) => {
 };
 
 export const getFlag = (iso: string) => {
-  if (iso == "YU" || iso == "UNKNOWN") return ":pirate_flag:";
+  if (iso === "YU" || iso === "UNKNOWN") return ":pirate_flag:";
 
   return `:flag_${iso.toLowerCase()}:`;
 };
 
 export const getClockEmoji = (date: Date): string => {
-  const correctHour = (h: number) => (h + 24) % 12 || 12;
+  // prettier-ignore
+  const correctHour = (h: number) => ((h + 24) % 12) || 12;
 
   const hour = correctHour(date.getHours());
   const minute = date.getMinutes();

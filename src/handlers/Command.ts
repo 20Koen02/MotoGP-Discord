@@ -15,14 +15,14 @@ const command = async (client: Client) => {
       const files = await readdir(`${commandsDir}/${folder}`);
       await Promise.all(
         files.map(async (file) => {
-          const c: Command = (await import(`${commandsDir}/${folder}/${file}`))
+          const command: Command = (await import(`${commandsDir}/${folder}/${file}`))
             .default;
 
-          client.commands.set(c.command.name, c);
+          client.commands.set(command.command.name, command);
           console.log(
             color(
               "text",
-              `📜 Loaded command ${color("variable", c.command.name)}`
+              `📜 Loaded command ${color("variable", command.command.name)}`
             )
           );
         })

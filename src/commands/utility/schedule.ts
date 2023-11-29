@@ -59,7 +59,7 @@ const command: Command = {
     }
 
     let sessionStrings = sessions.broadcasts
-      .filter((b) => b.type == "SESSION" && b.category.acronym == category)
+      .filter((b) => b.type === "SESSION" && b.category.acronym === category)
       .map((s) => {
         const date = new Date(s.date_start);
         return `${getSessionEmoji(s.shortname)} ${s.name}: ${time(
@@ -68,7 +68,7 @@ const command: Command = {
         )}, ${time(date, "R")}`;
       });
 
-    if (sessionStrings.length == 0) {
+    if (sessionStrings.length === 0) {
       sessionStrings = ["The schedule is not available yet"];
     }
 
@@ -76,14 +76,13 @@ const command: Command = {
       .setColor(getThemeColor("primary"))
       .setTitle(
         `:calendar_spiral: The ${sessions.circuit?.country} ${
-          event.categories.find((c) => c.acronym == category)?.name
+          event.categories.find((c) => c.acronym === category)?.name
         } Grand Prix full schedule`
       )
       .setDescription(
-        sessionStrings.join("\n") +
-          `\n\n${getClockEmoji(
-            new Date()
-          )} All times are in your local time zone`
+        `${sessionStrings.join("\n")}\n\n${getClockEmoji(
+          new Date()
+        )} All times are in your local time zone`
       )
       .setThumbnail(
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Moto_Gp_logo.svg/320px-Moto_Gp_logo.svg.png"

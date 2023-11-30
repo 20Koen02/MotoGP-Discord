@@ -2,15 +2,22 @@ import Keyv from "keyv";
 import { Event } from "./types/Event";
 import { ClassConstructor, plainToInstance } from "class-transformer";
 import { Session } from "./types/Session";
+import { Ratelimit } from "./ratelimit";
 
 export default class Api {
   public static instance: Api = new this();
+  private ratelimit: Ratelimit;
 
   private cache: Keyv;
 
   constructor(ttl: number = 30 * 60 * 1000) {
     // 30 minutes ttl by default
     this.cache = new Keyv({ ttl });
+    this.ratelimit = new Ratelimit([
+      { name: "minute", interval: 60, limit: 50 },
+      { name: "hour", interval: 60 * 60, limit: 200 },
+      { name: "day", interval: 24 * 60 * 60, limit: 500 },
+    ]);
   }
 
   private async get<T>(
@@ -20,6 +27,8 @@ export default class Api {
   ): Promise<T | T[] | null> {
     const cachedData = await this.cache.get(url);
     if (cachedData) return cachedData;
+
+    if (!this.ratelimit.check()) return null;
 
     const res = await fetch(url)
       .then((res) => res.json())
@@ -34,7 +43,9 @@ export default class Api {
   // 6 hour ttl
   async getEvents(seasonYear: number): Promise<Event[] | null> {
     const url = `https://api.motogp.pulselive.com/motogp/v1/events?seasonYear=${seasonYear}`;
-    const data = (await this.get(url, Event, 6 * 60 * 60 * 1000)) as Event[] | null;
+    const data = (await this.get(url, Event, 6 * 60 * 60 * 1000)) as
+      | Event[]
+      | null;
     return data;
   }
 

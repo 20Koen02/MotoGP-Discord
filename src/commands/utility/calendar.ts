@@ -16,6 +16,7 @@ const command: Command = {
     .setDescription("MotoGP calendar"),
 
   execute: async (interaction) => {
+    await interaction.deferReply();
     let year = interaction.options.getNumber("year");
 
     const api = Api.instance;
@@ -24,10 +25,9 @@ const command: Command = {
     if (year) {
       events = await api.getEvents(year);
 
-      if (!events) {
-        await interaction.reply({
+      if (!events || "error_type" in events) {
+        await interaction.editReply({
           content: `The ${year} calendar is not available`,
-          ephemeral: true,
         });
         return;
       }
@@ -39,17 +39,16 @@ const command: Command = {
         events = await api.getEvents(year);
 
         if (!events) {
-          await interaction.reply({
+          await interaction.editReply({
             content: `Something went wrong while fetching the ${year} and ${
               year + 1
             } schedule`,
-            ephemeral: true,
           });
           return;
         }
       }
     }
-    
+
     const calendar = events
       .filter((e) => e.kind === "GP")
       .map((event, i) => {
@@ -69,7 +68,7 @@ const command: Command = {
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Moto_Gp_logo.svg/320px-Moto_Gp_logo.svg.png"
       );
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
   },
 };
 

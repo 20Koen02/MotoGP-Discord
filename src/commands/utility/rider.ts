@@ -45,15 +45,16 @@ const command: Command = {
   },
 
   execute: async (interaction) => {
+    await interaction.deferReply();
+
     const api = Api.instance;
 
     const year =
       interaction.options.getNumber("year") || new Date().getFullYear();
     const teams = await api.getTeams(year);
     if (!teams) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `The ${year} teams are not available`,
-        ephemeral: true,
       });
       return;
     }
@@ -68,9 +69,8 @@ const command: Command = {
     const riderTeam = teams.find(findRider);
 
     if (!riderTeam) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `Rider ${riderName} not found`,
-        ephemeral: true,
       });
       return;
     }
@@ -81,9 +81,8 @@ const command: Command = {
     const statistics = await api.getRiderStatistics(rider.legacy_id);
 
     if (!stats || !statistics) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `Stats for ${rider.name} ${rider.surname} are not available`,
-        ephemeral: true,
       });
       return;
     }
@@ -140,11 +139,17 @@ const command: Command = {
         :medal: Points: ${statistics[0].points}
         :medal: Victories: ${statistics[0].first_position}
         `
-      )
-      .setImage(rider.current_career_step.pictures.bike.main || "")
-      .setThumbnail(rider.current_career_step.pictures.profile.main || "");
+      );
 
-    await interaction.reply({ embeds: [embed] });
+    if (rider.current_career_step.pictures.bike.main) {
+      embed.setImage(rider.current_career_step.pictures.bike.main);
+    }
+
+    if (rider.current_career_step.pictures.profile.main) {
+      embed.setThumbnail(rider.current_career_step.pictures.profile.main);
+    }
+
+    await interaction.editReply({ embeds: [embed] });
   },
 };
 

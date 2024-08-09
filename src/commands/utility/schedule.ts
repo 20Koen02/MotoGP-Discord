@@ -23,6 +23,8 @@ const command: Command = {
     )
     .setDescription("MotoGP schedule"),
   execute: async (interaction) => {
+    await interaction.deferReply();
+
     const category = interaction.options.getString("category") ?? "MGP";
 
     const api = Api.instance;
@@ -34,12 +36,11 @@ const command: Command = {
       year = new Date().getFullYear();
       allEvents = await api.getEvents(year);
 
-      if (!allEvents) {
-        await interaction.reply({
+      if (!allEvents  || "error_type" in allEvents) {
+        await interaction.editReply({
           content: `Something went wrong while fetching the ${year} and ${
             year + 1
           } schedule`,
-          ephemeral: true,
         });
         return;
       }
@@ -51,9 +52,8 @@ const command: Command = {
     const sessions = await api.getSessions(event.id);
 
     if (!sessions) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `Something went wrong while fetching the ${year} schedule`,
-        ephemeral: true,
       });
       return;
     }
@@ -88,7 +88,7 @@ const command: Command = {
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Moto_Gp_logo.svg/320px-Moto_Gp_logo.svg.png"
       );
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] });
   },
 };
 

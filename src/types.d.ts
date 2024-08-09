@@ -4,11 +4,11 @@ import {
   ChatInputCommandInteraction,
   ClientEvents,
   Collection,
-  SlashCommandBuilder,
+  SharedSlashCommand,
 } from "discord.js";
 
 export interface Command {
-  command: SlashCommandBuilder;
+  command: SharedSlashCommand
   execute: (interaction: ChatInputCommandInteraction) => Awaitable<void>;
   autocomplete?: (interaction: AutocompleteInteraction) => Awaitable<void>;
 }

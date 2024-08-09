@@ -7,6 +7,7 @@ import {
   getSessionEmoji,
   getThemeColor,
 } from "../../util";
+import { stripIndents } from "common-tags";
 
 const command: Command = {
   command: new SlashCommandBuilder()
@@ -32,11 +33,11 @@ const command: Command = {
     let allEvents;
     let year = new Date().getFullYear() + 1;
     allEvents = await api.getEvents(year);
-    if (!allEvents  || "error_type" in allEvents) {
+    if (!allEvents || "error_type" in allEvents) {
       year = new Date().getFullYear();
       allEvents = await api.getEvents(year);
 
-      if (!allEvents  || "error_type" in allEvents) {
+      if (!allEvents || "error_type" in allEvents) {
         await interaction.editReply({
           content: `Something went wrong while fetching the ${year} and ${
             year + 1
@@ -75,7 +76,7 @@ const command: Command = {
     const embed = new EmbedBuilder()
       .setColor(getThemeColor("primary"))
       .setTitle(
-        `:calendar_spiral: The ${sessions.circuit?.country} ${
+        stripIndents`:calendar_spiral: The ${sessions.circuit?.country} ${
           event.categories.find((c) => c.acronym === category)?.name
         } Grand Prix full schedule`
       )

@@ -1,24 +1,17 @@
+import { ShardingManager } from "discord.js";
 import env from "./env";
-import "reflect-metadata";
+import { color } from "./util";
 
-import { Client, Collection, GatewayIntentBits } from "discord.js";
-const { Guilds } = GatewayIntentBits;
-import { Command } from "./types";
-import { join } from "path";
-import { readdir } from "fs/promises";
+const manager = new ShardingManager("dist/bot.js", {
+  token: env.TOKEN,
+});
 
-const client = new Client({ intents: [Guilds], shards: "auto" });
-client.commands = new Collection<string, Command>();
+manager.on("shardCreate", (shard) =>
+  console.log(
+    color("primary", `💎 Registered Shard ${color("variable", shard.id)}`)
+  )
+);
 
-(async () => {
-  const handlersDir = join(__dirname, "handlers");
-  const handlerFiles = await readdir(handlersDir);
-
-  await Promise.all(
-    handlerFiles.map(async (handler) => {
-      (await import(`${handlersDir}/${handler}`)).default(client);
-    })
-  );
-
-  client.login(env.TOKEN);
-})();
+manager.spawn().then(() => {
+  console.log(color("primary", "🚀 Shards are now running"));
+});

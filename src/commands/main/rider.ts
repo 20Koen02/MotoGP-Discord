@@ -2,6 +2,7 @@ import { EmbedBuilder, HexColorString, SlashCommandBuilder } from "discord.js";
 import { Command } from "../../types";
 import Api from "../../api/api";
 import { Team } from "../../api/types/Team";
+import { stripIndents } from "common-tags";
 
 const command: Command = {
   command: new SlashCommandBuilder()
@@ -115,7 +116,7 @@ const command: Command = {
       .setColor(riderTeam.color as HexColorString)
       .setTitle(`Rider information for ${rider.name} ${rider.surname}`)
       .setDescription(
-        `
+        stripIndents`
         :card_index: Name: ${rider.name} ${rider.surname} (${
           rider.current_career_step.short_nickname
         })

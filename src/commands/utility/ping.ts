@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from "discord.js";
 import { Command } from "../../types";
+import { stripIndents } from "common-tags";
 
 const command: Command = {
   command: new SlashCommandBuilder()
@@ -11,11 +12,10 @@ const command: Command = {
       fetchReply: true,
       ephemeral: true,
     });
-    interaction.editReply(
-      `🏓 Pong! Roundtrip latency: ${
-        sent.createdTimestamp - interaction.createdTimestamp
-      }ms`
-    );
+    interaction.editReply(stripIndents`
+      🏓 Pong!
+      Roundtrip: ${sent.createdTimestamp - interaction.createdTimestamp} ms
+      `);
   },
 };
 

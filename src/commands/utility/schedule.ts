@@ -30,7 +30,7 @@ const command: Command = {
     let allEvents;
     let year = new Date().getFullYear() + 1;
     allEvents = await api.getEvents(year);
-    if (!allEvents) {
+    if (!allEvents  || "error_type" in allEvents) {
       year = new Date().getFullYear();
       allEvents = await api.getEvents(year);
 

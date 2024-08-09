@@ -1,8 +1,10 @@
 import Keyv from "keyv";
 import { Event } from "./types/Event";
-import { ClassConstructor, plainToInstance } from "class-transformer";
 import { Session } from "./types/Session";
 import { Ratelimit } from "./ratelimit";
+import { Team } from "./types/Team";
+import { RiderStats } from "./types/RiderStats";
+import { RiderStatistics } from "./types/RiderStatistics";
 
 export default class Api {
   public static instance: Api = new this();
@@ -20,11 +22,7 @@ export default class Api {
     ]);
   }
 
-  private async get<T>(
-    url: string,
-    cls: ClassConstructor<T>,
-    ttl?: number
-  ): Promise<T | T[] | null> {
+  private async get<T>(url: string, ttl?: number): Promise<T | T[] | null> {
     const cachedData = await this.cache.get(url);
     if (cachedData) return cachedData;
 
@@ -34,29 +32,45 @@ export default class Api {
       .then((res) => res.json())
       .catch(() => null);
     if (!res) return null;
-    const data = plainToInstance(cls, res);
 
-    await this.cache.set(url, data, ttl);
-    return data;
+    await this.cache.set(url, res, ttl);
+    return res as T | T[];
   }
 
   // 6 hour ttl
   async getEvents(seasonYear: number): Promise<Event[] | null> {
     const url = `https://api.motogp.pulselive.com/motogp/v1/events?seasonYear=${seasonYear}`;
-    const data = (await this.get(url, Event, 6 * 60 * 60 * 1000)) as
-      | Event[]
-      | null;
+    const data = (await this.get(url, 6 * 60 * 60 * 1000)) as Event[] | null;
     return data;
   }
 
   // 1 hour ttl
   async getSessions(eventUuid: string): Promise<Session | null> {
     const url = `https://api.motogp.pulselive.com/motogp/v1/events/${eventUuid}`;
-    const data = (await this.get(
-      url,
-      Session,
-      60 * 60 * 1000
-    )) as Session | null;
+    const data = (await this.get(url, 60 * 60 * 1000)) as Session | null;
+    return data;
+  }
+
+  // 6 hour ttl
+  async getTeams(seasonYear: number): Promise<Team[] | null> {
+    const url = `https://api.motogp.pulselive.com/motogp/v1/teams?categoryUuid=737ab122-76e1-4081-bedb-334caaa18c70&seasonYear=${seasonYear}`;
+    const data = (await this.get(url, 6 * 60 * 60 * 1000)) as Team[] | null;
+    return data;
+  }
+
+  // 1 hour ttl
+  async getRiderStats(rider: number): Promise<RiderStats | null> {
+    const url = `https://api.motogp.pulselive.com/motogp/v1/riders/${rider}/stats`;
+    const data = (await this.get(url, 60 * 60 * 1000)) as RiderStats | null;
+    return data;
+  }
+
+  // 1 hour ttl
+  async getRiderStatistics(rider: number): Promise<RiderStatistics[] | null> {
+    const url = `https://api.motogp.pulselive.com/motogp/v1/riders/${rider}/statistics`;
+    const data = (await this.get(url, 60 * 60 * 1000)) as
+      | RiderStatistics[]
+      | null;
     return data;
   }
 }

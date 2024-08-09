@@ -1,4 +1,4 @@
-export class Session {
+export interface Session {
   event_categories: EventCategory[]
   country: string
   circuit: Circuit
@@ -26,14 +26,14 @@ export class Session {
   status: string
 }
 
-export class EventCategory {
+export interface EventCategory {
   category_id: string
   category_timing_id: number
   timing_id: number
   sequence: number
 }
 
-export class Circuit {
+export interface Circuit {
   id: string
   name: string
   iso_code: string
@@ -54,12 +54,12 @@ export class Circuit {
   user_location: UserLocation
 }
 
-export class TimingId {
+export interface TimingId {
   business_unit: string
   id: number
 }
 
-export class Track {
+export interface Track {
   id: string
   first_grid: string
   box_entry: boolean
@@ -78,38 +78,38 @@ export class Track {
   assets: Assets
 }
 
-export class LenghtUnits {
+export interface LenghtUnits {
   meters: number
   kiloMeters: number
   miles: number
   feet: number
 }
 
-export class WidthUnits {
+export interface WidthUnits {
   meters: number
   kiloMeters: number
   miles: number
   feet: number
 }
 
-export class LongestStraightUnits {
+export interface LongestStraightUnits {
   meters: number
   kiloMeters: number
   miles: number
   feet: number
 }
 
-export class TimingId2 {
+export interface TimingId2 {
   business_unit: string
   id: string
 }
 
-export class Assets {
+export interface Assets {
   simple: Simple
   info: Info
 }
 
-export class Simple {
+export interface Simple {
   id: string
   name: string
   type: string
@@ -117,7 +117,7 @@ export class Simple {
   mimetype: string
 }
 
-export class Info {
+export interface Info {
   id: string
   name: string
   type: string
@@ -125,7 +125,7 @@ export class Info {
   mimetype: string
 }
 
-export class CircuitDescription {
+export interface CircuitDescription {
   id: string
   business_unit_id: BusinessUnitId
   business_unit_name: BusinessUnitName
@@ -133,21 +133,21 @@ export class CircuitDescription {
   description: string
 }
 
-export class BusinessUnitId {
+export interface BusinessUnitId {
   id: string
 }
 
-export class BusinessUnitName {
+export interface BusinessUnitName {
   value: string
 }
 
-export class UserLocation {
+export interface UserLocation {
   lat: string
   lng: string
   radius: number
 }
 
-export class NextBroadcast {
+export interface NextBroadcast {
   id_broadcast: string
   remain: number
   type: string
@@ -157,7 +157,7 @@ export class NextBroadcast {
   gp_day: number
 }
 
-export class Asset {
+export interface Asset {
   id: string
   name: string
   type: string
@@ -166,13 +166,13 @@ export class Asset {
   mimetype: string
 }
 
-export class Season {
+export interface Season {
   id: string
   year: number
   current: boolean
 }
 
-export class Category {
+export interface Category {
   id: string
   acronym: string
   name: string
@@ -181,7 +181,7 @@ export class Category {
   priority: number
 }
 
-export class Broadcast {
+export interface Broadcast {
   id: string
   shortname: string
   name: string
@@ -205,7 +205,7 @@ export class Broadcast {
   timing_id: number
 }
 
-export class Category2 {
+export interface Category2 {
   id: string
   acronym: string
   name: string
@@ -214,18 +214,18 @@ export class Category2 {
   priority: number
 }
 
-export class BusinessUnit {
+export interface BusinessUnit {
   id: string
   name: string
   acronym: string
 }
 
-export class Schedule {
+export interface Schedule {
   options: Option[]
   selected_day: number
 }
 
-export class Option {
+export interface Option {
   date: number
   dateStart: string
   name: string

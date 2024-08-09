@@ -1,4 +1,4 @@
-export class Event {
+export interface Event {
   timing_id: number
   event_categories: EventCategory[]
   country: string
@@ -25,7 +25,7 @@ export class Event {
   place?: Place
 }
 
-export class EventCategory {
+export interface EventCategory {
   category_id: string
   category_timing_id: number
   timing_id: number
@@ -38,14 +38,14 @@ export class EventCategory {
   sprint_red_flag?: number
 }
 
-export class Distance {
+export interface Distance {
   meters: number
   kiloMeters: number
   miles: number
   feet: number
 }
 
-export class Circuit {
+export interface Circuit {
   id: string
   name: string
   iso_code: string
@@ -68,12 +68,12 @@ export class Circuit {
   capacity?: number
 }
 
-export class TimingId {
+export interface TimingId {
   business_unit: string
   id: number
 }
 
-export class Track {
+export interface Track {
   id: string
   first_grid: string
   box_entry: boolean
@@ -92,33 +92,33 @@ export class Track {
   assets: unknown
 }
 
-export class LenghtUnits {
+export interface LenghtUnits {
   meters: number
   kiloMeters: number
   miles: number
   feet: number
 }
 
-export class WidthUnits {
+export interface WidthUnits {
   meters: number
   kiloMeters: number
   miles: number
   feet: number
 }
 
-export class LongestStraightUnits {
+export interface LongestStraightUnits {
   meters: number
   kiloMeters: number
   miles: number
   feet: number
 }
 
-export class TimingId2 {
+export interface TimingId2 {
   business_unit: string
   id: string
 }
 
-export class CircuitDescription {
+export interface CircuitDescription {
   id: string
   business_unit_id: BusinessUnitId
   business_unit_name: BusinessUnitName
@@ -126,28 +126,28 @@ export class CircuitDescription {
   description: string
 }
 
-export class BusinessUnitId {
+export interface BusinessUnitId {
   id: string
 }
 
-export class BusinessUnitName {
+export interface BusinessUnitName {
   value: string
 }
 
-export class UserLocation {
+export interface UserLocation {
   lat: string
   lng: string
   radius?: number
 }
 
-export class Ticketing {
+export interface Ticketing {
   id: string
   language: string
   url: string
   type: string
 }
 
-export class Broadcast {
+export interface Broadcast {
   id: string
   shortname: string
   name: string
@@ -172,7 +172,7 @@ export class Broadcast {
   num_laps?: number
 }
 
-export class Category {
+export interface Category {
   id: string
   acronym: string
   name: string
@@ -181,18 +181,18 @@ export class Category {
   priority: number
 }
 
-export class BusinessUnit {
+export interface BusinessUnit {
   id: string
   name: string
   acronym: string
 }
 
-export class Schedule {
+export interface Schedule {
   options: Option[]
   selected_day?: number
 }
 
-export class Option {
+export interface Option {
   date: number
   dateStart: string
   name: string
@@ -202,14 +202,14 @@ export class Option {
   gp_day: number
 }
 
-export class Url {
+export interface Url {
   id: string
   language: string
   url: string
   type: string
 }
 
-export class Asset {
+export interface Asset {
   id: string
   name: string
   type: string
@@ -218,13 +218,13 @@ export class Asset {
   mimetype: string
 }
 
-export class Season {
+export interface Season {
   id: string
   year: number
   current: boolean
 }
 
-export class Category2 {
+export interface Category2 {
   id: string
   acronym: string
   name: string
@@ -233,7 +233,7 @@ export class Category2 {
   priority: number
 }
 
-export class Place {
+export interface Place {
   id: string
   iso_code: string
   country: string

@@ -34,7 +34,7 @@ const command: Command = {
     } else {
       year = new Date().getFullYear() + 1;
       events = await api.getEvents(year);
-      if (!events) {
+      if (!events || "error_type" in events) {
         year = new Date().getFullYear();
         events = await api.getEvents(year);
 
@@ -49,7 +49,7 @@ const command: Command = {
         }
       }
     }
-
+    
     const calendar = events
       .filter((e) => e.kind === "GP")
       .map((event, i) => {

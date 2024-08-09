@@ -134,7 +134,7 @@ const command: Command = {
         :medal: Poles: ${poles}
         :checkered_flag: Races: ${races}
 
-        Last Season (${statistics[0].season}):
+        Current Season (${statistics[0].season}):
         :medal: Position: ${statistics[0].position}
         :medal: Points: ${statistics[0].points}
         :medal: Victories: ${statistics[0].first_position}

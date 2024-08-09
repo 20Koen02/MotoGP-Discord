@@ -7,7 +7,7 @@ import { Command } from "./types";
 import { join } from "path";
 import { readdir } from "fs/promises";
 
-const client = new Client({ intents: [Guilds] });
+const client = new Client({ intents: [Guilds], shards: "auto" });
 client.commands = new Collection<string, Command>();
 
 (async () => {

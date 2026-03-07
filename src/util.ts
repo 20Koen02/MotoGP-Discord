@@ -1,5 +1,7 @@
 import chalk from "chalk";
 import { Event } from "./api/types/Event";
+import axios from "axios";
+import sharp from "sharp";
 
 const themeColors = {
   primary: "#DA003F",
@@ -54,6 +56,27 @@ export const getNextEvent = (events: Event[]): Event | undefined => {
   });
 
   return next;
+};
+
+export const downloadAndConvertSvgToPng = async (
+  url: string
+): Promise<Buffer | null> => {
+  try {
+    // Fetch the SVG image from the URL
+    const response = await axios({
+      url: url,
+      method: "GET",
+      responseType: "arraybuffer",
+    });
+
+    const svgBuffer = response.data;
+
+    const pngBuffer = await sharp(svgBuffer).resize(1024).png().toBuffer();
+
+    return pngBuffer;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const emoji = {

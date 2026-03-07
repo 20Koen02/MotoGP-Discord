@@ -17,7 +17,7 @@ const command: Command = {
     .addNumberOption((option) =>
       option
         .setName("year")
-        .setDescription("The year of the calendar")
+        .setDescription("The year the rider was active")
         .setMinValue(1949)
         .setMaxValue(new Date().getFullYear() + 1)
         .setRequired(false)
